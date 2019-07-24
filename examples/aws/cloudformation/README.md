@@ -18,6 +18,11 @@ make create-stack-vpc
 
 ## Launch Teleport Cluster
 
+TODO
+- [ ] Do I still need a root cert if using ACM?
+- [ ] How can the AMI `/usr/bin/teleport-generate-config` set systemd to run in --insecure mode. 
+
+
 ```bash
 export STACK=teleport-test-cf-build-servers
 export STACK_PARAMS="\
