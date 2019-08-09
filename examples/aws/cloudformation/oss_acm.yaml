@@ -76,11 +76,11 @@ Mappings:
     # us-east-1 = US East (N. Virginia)
     # us-east-2 = US East (Ohio)
     # us-west-2 = US West (Oregon)
-    # All AMI from AWS Marketplace aws-marketplace/gravitational-teleport-marketplace-ami-oss-4.0.0-xxx
-    eu-west-1: {HVM64 : ami-0514b7b893dfa3503}
-    us-east-1: {HVM64 : ami-04e79542e3e5fbf02}
-    us-east-2: {HVM64 : ami-09d157e6ec5e4dc76}
-    us-west-2: {HVM64 : ami-0514b7b893dfa3503}
+    # All AMIs from AWS - gravitational-teleport-ami-oss-4.0.4
+    eu-west-1: {HVM64 : ami-077328e43d0328963}
+    us-east-1: {HVM64 : ami-02fc44456de16da53}
+    us-east-2: {HVM64 : ami-07da948a7797cc3f5}
+    us-west-2: {HVM64 : ami-0f41512a01edc93b0}
 
 Resources:
 # Auth server setup
@@ -105,9 +105,8 @@ Resources:
           ToPort: 3025
           CidrIp: 0.0.0.0/0
 
-
       SecurityGroupEgress:
-        - IpProtocol: -1
+        - IpProtocol: "-1"
           Description: Egress is allowed anywhere
           FromPort: 0
           ToPort: 0
@@ -134,7 +133,7 @@ Resources:
           SourceSecurityGroupId: {Ref: ProxySecurityGroup}
 
       SecurityGroupEgress:
-        - IpProtocol: -1
+        - IpProtocol: "-1"
           Description: Egress is allowed anywhere
           FromPort: 0
           ToPort: 0
@@ -260,8 +259,8 @@ Resources:
         - {Ref: AuthSubnetA}
         - {Ref: AuthSubnetB}
       LaunchConfigurationName: {Ref: AuthLaunchConfig}
-      MinSize: 2
-      MaxSize: 2
+      MinSize: "2"
+      MaxSize: "2"
       TargetGroupARNs:
         - {Ref: AuthTargetGroup}
 
@@ -299,7 +298,7 @@ Resources:
           CidrIp: 0.0.0.0/0
 
       SecurityGroupEgress:
-        - IpProtocol: -1
+        - IpProtocol: "-1"
           Description: Egress is allowed anywhere
           FromPort: 0
           ToPort: 0
@@ -358,7 +357,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       HealthCheckIntervalSeconds: 30
-      HealthCheckPort: 443
+      HealthCheckPort: "443"
       HealthCheckPath: /webapi/ping
       #HealthCheckProtocol: TCP
       #HealthCheckTimeoutSeconds: 10
@@ -450,8 +449,8 @@ Resources:
         - {Ref: ProxySubnetA}
         - {Ref: ProxySubnetB}
       LaunchConfigurationName: {Ref: ProxyLaunchConfig}
-      MinSize: 2
-      MaxSize: 2
+      MinSize: "2"
+      MaxSize: "2"
       TargetGroupARNs:
         - {Ref: ProxyWebTargetGroup}
 
@@ -511,8 +510,8 @@ Resources:
         - {Ref: NodeSubnetA}
         - {Ref: NodeSubnetB}
       LaunchConfigurationName: {Ref: NodeLaunchConfig}
-      MinSize: 2
-      MaxSize: 2
+      MinSize: "2"
+      MaxSize: "2"
 
   AuthRole:
     Type: AWS::IAM::Role
@@ -800,7 +799,7 @@ Resources:
       - {AttributeName: "HashKey", AttributeType: "S"}
       - {AttributeName: "FullPath", AttributeType: "S"}
       
-      TimeToLiveSpecification: {AttributeName: "Expires", Enabled: "true"}
+      TimeToLiveSpecification: {AttributeName: "Expires", Enabled: true}
       # Server side encrypt all the data for this table
       SSESpecification: {SSEEnabled: true}
 
@@ -817,7 +816,7 @@ Resources:
       AttributeDefinitions:
       - {AttributeName: "Lock", AttributeType: "S"}
 
-      TimeToLiveSpecification: {AttributeName: "Expires", Enabled: "true"}
+      TimeToLiveSpecification: {AttributeName: "Expires", Enabled: true}
 
   # EventsTable is a dynamodb table that is
   # used to store teleport audit log events
@@ -835,7 +834,7 @@ Resources:
       - {AttributeName: "EventNamespace", AttributeType: "S"}
       - {AttributeName: "CreatedAt", AttributeType: "N"}
 
-      TimeToLiveSpecification: {AttributeName: "Expires", Enabled: "true"}
+      TimeToLiveSpecification: {AttributeName: "Expires", Enabled: true}
 
       GlobalSecondaryIndexes:
       - IndexName: "timesearch"
